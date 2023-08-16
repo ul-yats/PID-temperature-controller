@@ -1,5 +1,6 @@
 # ПИД-регулятор для управления элементом Пельтье с обратной связью по температурному сенсору на базе платформы ARDUINO.
 Схема установки в среде Proteus представлена на рисунке 1:
+
 ![electronic scheme in the Proteus Design Suite](https://github.com/ul-yats/PID-temperature-controller/assets/127503480/d42711da-4120-4032-8724-30e935771ae9)
 <p><b>Рисунок 1 — Схема установки в среде Proteus</b></p>
 
