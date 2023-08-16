@@ -1,29 +1,44 @@
-#  An easy PID controller to control temperature of a Peltier device using Arduino.
-
+# ПИД-регулятор для управления элементом Пельтье с обратной связью по температурному сенсору на базе платформы ARDUINO.
+Схема установки в среде Proteus представлена на рисунке 1:
 ![electronic scheme in the Proteus Design Suite](https://github.com/ul-yats/PID-temperature-controller/assets/127503480/d42711da-4120-4032-8724-30e935771ae9)
-<p><b>Electronic scheme in the Proteus Design Suite</b></p>
+<p><b>Рисунок 1 — Схема установки в среде Proteus</b></p>
 
-The first step in creating a temperature control setup was to calibrate the thermistor. In the installation diagram above (fig.1) section (1) is responsible for measuring the temperature: by measuring the voltage drop across resistors with nominal resistances R<sub>1</sub> = 10.0 kOhm and R<sub>2</sub> = 1.0 kOhm, the current in the circuit is determined. Knowing the current in the circuit and the voltage drop across NTC thermistor, it is possible to calculate its resistance. Next, using the formula for the temperature sensitivity coefficient taken from the technical documentation for the NTC thermistor (B57330V2103+260), the expression for finding the temperature was established:
+Первым шагом при создании установки для регулирования температуры являлась калибровка термистора. На приведённой выше схеме установки (рисунок 1) участок (1) отвечает за измерение температуры: измеряя падение напряжения на резисторах номинальными сопротивлениями  R<sub>1</sub> = 10.0 кОм и  R<sub>2</sub> = 1.0 кОм, определяется величина тока в цепи. Зная ток в цепи и падение напряжения на 
+NTC термисторе, представляется возможным рассчитать его сопротивление. Далее, с использованием формулы для коэффициента температурной чувствительности, взятой из технической документации для NTC термистора (B57330V2103+260), было установлено выражение для нахождения температуры:
 
 <b>T = T<sub>R</sub>*B/ln(R/R<sub>25</sub>)*T<sub>R</sub>+B [1]</b>
 
-By substituting all the obtained values into formula [1], the correct temperature values were obtained.
-Figure (2) shows a graph of resistance as a function of
-temperature obtained experimentally:
+Подставив все полученные значения в формулу 1, были получены корректные значения температуры. 
+На рисунке 2 представлен график сопротивления как функции 
+температуры, полученный экспериментально:
 
 ![image](https://github.com/ul-yats/PID-temperature-controller/assets/127503480/011f882e-81e8-466f-8255-6a99574f51e3)
-<p><b>A graph of resistance as a function of temperature obtained experimentally</b></p>
+<p><b>Рисунок 2 — График сопротивления как функции температуры</b></p>
 
-Next, the assembly of the cooling unit was carried out, consisting of Peltier element and an NTC thermistor attached to it, as well as from aluminum radiator and cooler, which serve to remove heat from the hotside of the Peltier element. For thermal insulation of the cold side polystyrene was used. NTC thermistor was attached to cooling side with heat conductive tape and closed at the top Styrofoam lid to prevent heating of the cold side Peltier element due to the atmosphere.
+Далее осуществлялась сборка охлаждающего блока, состоящего из элемента Пельтье и прикреплённого к нему NTC термистора, а также из 
+алюминиевого радиатора и кулера, которые служат для отвода тепла от горячей стороны элемента Пельтье. Для термоизоляции холодной стороны 
+использовался пенополистирол. NTC термистор был прикреплён на охлаждающую сторону с помощью теплопроводящей ленты и закрыт сверху 
+крышкой из пенополистирола, чтобы исключить нагрев холодной стороны элемента Пельтье за счёт атмосферы.
+На рисунке 3 представлен процесс создания охлаждающего блока:
 
-A MOSFET transistor was used to control the Peltier element, which allows currents up to 9 A to pass through itself. To control
-The opening/closing of the transistor used a PWM signal. After applying voltage, the microcontroller receives from the NTC thermistor
-current voltage indicator, which is subsequently converted into resistance and then to temperature. Further, the resulting temperature
-is compared with the one set in the development environment, and, depending on the value errors, the PID controller generates the appropriate pulses to open Peltier element. Then the task of the PID controller is to ensure that reach the set temperature.
+![image](https://github.com/ul-yats/PID-temperature-controller/assets/127503480/0ebe3a41-dea1-461e-bcc9-9fd07eeb7241)
+<p><b>Рисунок 3 — Процесс создания охлаждающего блока</b></p>
 
-When creating the circuit, the following are used: resistor R = 10.0 kΩ, resistor R = 1.0 kΩ, Peltier module TEC1-07106 (1), field-effect transistor (4), NTC thermistor (B57330V2103 + 260) (3), connecting wires, solderless breadboard and Arduino UNO board (2). Figure (3) shows the assembled circuit:
+Для управления элементом Пельтье использовался MOSFET транзистор, который позволяет пропускать через себя токи до 9 А. Чтобы управлять 
+открытием/закрытием транзистора использовался ШИМ-сигнал. После подачи напряжения, микроконтроллер получает с NTC термистора 
+текущий показатель напряжения, который впоследствии пересчитывается в сопротивление, а затем в температуру. Далее полученная температура 
+сравнивается с заданной в среде разработки, и, в зависимости от величины ошибки, ПИД-регулятор формирует соответствующие импульсы для открытия элемента Пельтье. Затем задача ПИД-контроллера сводится к тому, чтобы выйти на заданную температуру.
+
+При создании цепи используются: резистор R = 10.0 кОм, резистор R = 1.0 кОм, модуль Пельтье TEC1-07106 (1), полевой транзистор (4), NTC термистор (B57330V2103+260) (3), соединительные  провода типа папа-папа, беспаечная макетная плата и плата Arduino UNO (2).
+На рисунке 4 представлена собранная цепь:
 
 ![the circuit](https://github.com/ul-yats/PID-temperature-controller/assets/127503480/bacf9c93-b93f-4f81-83c8-783ae4a971c0)
-<p><b>The assembled circuit</b></p>
+<p><b>Рисунок 4 — Исследуемая цепь</b></p>
 
+Полученные данные температуры записывались в текстовый документ и после были перенесены в приложение Microsoft Excel. Вследствие 
+были построены следующие график температуры от времени.
+На рисунке 5 представлен график температуры от времени:
+
+![image](https://github.com/ul-yats/PID-temperature-controller/assets/127503480/02cba7dd-d784-4072-a154-4413db05d0d3)
+<p><b>Рисунок 5 — График зависимости температуры от времени</b></p>
 
